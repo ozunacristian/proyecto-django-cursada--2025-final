@@ -1,0 +1,80 @@
+# ============================================
+# ARCHIVOS DE PYTHON
+# ============================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.pyc
+
+# ============================================
+# ENTORNOS VIRTUALES
+# ============================================
+/entornov/
+venv/
+ENV/
+*.env
+.env.*
+
+# ============================================
+# ARCHIVO BASE DE DATOS LOCAL (NO VA AL REPO)
+# ============================================
+db.sqlite3
+
+# Si usaran PostgreSQL: NO subas dumps locales.
+*.sql
+
+# ============================================
+# ARCHIVOS GENERADOS POR DJANGO
+# ============================================
+/staticfiles/
+media/
+media_root/
+static_root/
+
+# Archivos generados por collectstatic
+/static/
+
+# ============================================
+# CONFIGURACIONES LOCALES
+# ============================================
+/pyvenv.cfg
+/local_settings.py
+
+# ============================================
+# EDITOR / IDE
+# ============================================
+.vscode/
+.idea/
+
+# ============================================
+# LOGS Y TEMPORALES
+# ============================================
+*.log
+*.pot
+*.pyproj
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# ============================================
+# SISTEMAS OPERATIVOS
+# ============================================
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ============================================
+# ARCHIVOS DE DEPENDENCIAS (OPCIONALES)
+# ============================================
+# Para evitar subir build caches
+build/
+dist/
+*.egg-info/
