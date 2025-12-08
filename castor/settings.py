@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for castor project.
 
@@ -84,12 +85,15 @@ WSGI_APPLICATION = 'castor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', # .sqlite3 por .postgresql pequeña corrección.
-        'NAME': 'castor_db', #name DB postgresql
-        'USER': 'castor_user', #usuario postgresql
-        'PASSWORD': 'castor123', #contraseña postgresql
-        'HOST': 'localhost', #servidor postgresql
-        'PORT': '5432', #puerto postgresql
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'castor_db',
+        'USER': 'castor_user',
+        'PASSWORD': 'castor123',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
     }
 }
 
@@ -129,3 +133,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+DEFAULT_CHARSET = 'utf-8'

@@ -3,6 +3,8 @@
 # ============================================
 __pycache__/
 castor/__pycache__/
+__pycache__/
+*$py.class
 *.py[cod]
 *.pyo
 *.pyd
