@@ -10,3 +10,16 @@ class Tablero(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class IntegranteTablero(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tableros_como_miembro')
+    tablero = models.ForeignKey(Tablero, on_delete=models.CASCADE, related_name='integrantes')
+    fecha_union = models.DateTimeField(auto_now_add=True)
+
+    class Meta: 
+        unique_together = ('usuario', 'tablero')
+        verbose_name = 'Integrante del Tablero'
+        verbose_name_plural = 'Integrantes del Tablero'
+
+    def __str__(self):
+        return f"{self.usuario.username} → {self.tablero.titulo}"
