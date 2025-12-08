@@ -14,6 +14,7 @@ import sys #Manipulación del sistema
 import psycopg2 #Conexión a PostgreSQL
 from datetime import datetime #Registro de Fecha/Hora
 
+
 #Función principal de prueba de conexión a la DB
 def test_postgresql_connection():
     """Test connection to PostgreSQL database using settings from Django project."""
@@ -26,7 +27,7 @@ def test_postgresql_connection():
     #Manejo de errores
     try:
         #intentamos conectar
-        conn = psycopg2.connect(**DB_CONFIG)
+        conn = psycopg2.connect(**DB_CONFIG, client_encoding='utf8')
 
         #Si la conexión es exitosa
         cursor = conn.cursor() #Creamos cursor para ejecutar los comandos SQL
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         'user': 'castor_user',      # Usuario de PostgreSQL
         'password': 'castor123',    # Contraseña
         'host': 'localhost',        # Host
-        'port': '5432'              # Puerto de PostgreSQL
+        'port': '5432'            # Puerto de PostgreSQL
     }
     
     print("=" * 50) #Cadena de separación para estandarización visual

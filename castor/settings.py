@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'castor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql', # .sqlite3 por .postgresql pequeña corrección.
         'NAME': 'castor_db', #name DB postgresql
         'USER': 'castor_user', #usuario postgresql
         'PASSWORD': 'castor123', #contraseña postgresql

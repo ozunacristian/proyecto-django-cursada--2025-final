@@ -2,6 +2,7 @@
 # ARCHIVOS DE PYTHON
 # ============================================
 __pycache__/
+castor/__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
@@ -22,6 +23,7 @@ ENV/
 # ARCHIVO BASE DE DATOS LOCAL (NO VA AL REPO)
 # ============================================
 db.sqlite3
+castor_db
 
 # Si usaran PostgreSQL: NO subas dumps locales.
 *.sql
