@@ -40,7 +40,6 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
-    'apps.contenido',
     'apps.tablero',
     'apps.ticket',
     'apps.usuario',
