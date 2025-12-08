@@ -16,6 +16,7 @@ venv/
 ENV/
 *.env
 .env.*
+.env03/ 
 
 # ============================================
 # ARCHIVO BASE DE DATOS LOCAL (NO VA AL REPO)
