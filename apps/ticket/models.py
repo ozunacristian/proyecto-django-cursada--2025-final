@@ -69,3 +69,18 @@ class Tag(models.Model):
 
     def __str__(self):
         return f"{self.nombre} ({self.tablero.titulo})"
+
+
+# con este modelo se podrá aplicar múltiples tags a un ticket.
+class TicketTag(models.Model):
+    ticket = models.ForeignKey('Ticket', on_delete=models.CASCADE, related_name='ticket_tags')
+    tag = models.ForeignKey('Tag', on_delete=models.CASCADE, related_name='tag_tickets')
+    fecha_asignacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('ticket', 'tag')
+        verbose_name = 'Etiqueta aplicada al ticket'
+        verbose_name_plural = 'Etiquetas aplicadas a tickets'
+
+    def __str__(self):
+        return f"{self.ticket.titulo} → {self.tag.nombre}"
