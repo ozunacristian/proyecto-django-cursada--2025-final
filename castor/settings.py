@@ -86,14 +86,11 @@ WSGI_APPLICATION = 'castor.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'castor_db',
-        'USER': 'castor_user',
-        'PASSWORD': 'castor123',
-        'HOST': 'localhost',
+        'NAME': 'castordb',  # Sin guión bajo
+        'USER': 'castoruser',  # Sin guión bajo
+        'PASSWORD': 'admin',  # Sin números
+        'HOST': '127.0.0.1',  # IP en lugar de 'localhost'
         'PORT': '5432',
-        'OPTIONS': {
-            'client_encoding': 'UTF8',
-        },
     }
 }
 
