@@ -19,6 +19,8 @@ class Lista(models.Model):
         return f"{self.titulo} ({self.tablero.titulo})"
 
 
+
+
 class Ticket(models.Model):
 
     # De momento se harcodea la prioridad, se prevee expansión con un modelo como lookUp, dado que pueden haber más categorías de prioridad.
@@ -51,3 +53,19 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"{self.titulo} ({self.lista.titulo})"
+
+
+
+class Tag(models.Model):
+    nombre = models.CharField(max_length=100)
+    color = models.CharField(max_length=20, default="#cccccc")
+    tablero = models.ForeignKey('tablero.Tablero', on_delete=models.CASCADE, related_name='tags')
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Etiqueta'
+        verbose_name_plural = 'Etiquetas'
+        ordering = ['nombre'] # con esto ordenamos alfabeticamente.
+
+    def __str__(self):
+        return f"{self.nombre} ({self.tablero.titulo})"

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.ticket.models import Lista, Ticket
+from apps.ticket.models import Lista, Ticket, Tag
 
 
 @admin.register(Lista)
@@ -15,3 +15,10 @@ class TicketAdmin(admin.ModelAdmin):
     list_filter = ('tablero', 'lista', 'prioridad', 'activo')
     search_fields = ('titulo', 'descripcion', 'creado_por__username', 'asignado_a__username')
     ordering = ('-fecha_creacion',)
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'color', 'tablero', 'fecha_creacion')
+    list_filter = ('tablero',)
+    search_fields = ('nombre', 'tablero__titulo')
+    ordering = ('tablero', 'nombre')
