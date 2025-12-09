@@ -1,3 +1,10 @@
 from django.contrib import admin
+from apps.ticket.models import Lista
 
-# Register your models here.
+
+@admin.register(Lista)
+class ListaAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'tablero', 'orden', 'fecha_creacion')
+    list_filter = ('tablero',)
+    search_fields = ('titulo', 'tablero__titulo')
+    ordering = ('tablero', 'orden')
