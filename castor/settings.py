@@ -45,6 +45,7 @@ LOCAL_APPS = [
     'apps.ticket',
     'apps.usuario',
     'apps.comentario',
+    'apps.etiqueta',
 ]
 
 THIRD_PARTY_APPS = []
