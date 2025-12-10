@@ -29,10 +29,3 @@ class TicketTagAdmin(admin.ModelAdmin):
     list_filter = ('tag', 'ticket')
     search_fields = ('ticket__titulo', 'tag__nombre')
     ordering = ('-fecha_asignacion',)
-
-@admin.register(Comentario)
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ('usuario', 'ticket', 'fecha_creacion', 'activo')
-    list_filter = ('fecha_creacion', 'activo', 'usuario')
-    search_fields = ('contenido', 'usuario__username', 'ticket__titulo')
-    ordering = ('-fecha_creacion',)
