@@ -44,6 +44,7 @@ LOCAL_APPS = [
     'apps.tablero',
     'apps.ticket',
     'apps.usuario',
+    'apps.comentario',
 ]
 
 THIRD_PARTY_APPS = []
