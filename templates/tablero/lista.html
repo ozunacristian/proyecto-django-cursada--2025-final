@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Tableros</h1>
+
+<a href="{% url 'crear_tablero' %}">Crear Tablero</a>
+
+{% if object_list %}
+<ul>
+    {% for tablero in object_list %}
+    <li>
+        <a href="{% url 'detalle_tablero' tablero.id %}">{{ tablero.titulo }}</a>
+        - <a href="{% url 'editar_tablero' tablero.id %}">Editar</a>
+        - <a href="{% url 'eliminar_tablero' tablero.id %}">Eliminar</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No hay tableros.</p>
+{% endif %}
+{% endblock %}
