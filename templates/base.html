@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titulo %}Gestor Castor{% endblock %}</title>
+</head>
+
+<body>
+
+    <header>
+        <h1>Gestor de Tableros</h1>
+        <nav>
+            <a href="{% url 'lista_tableros' %}">Tableros</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% block contenido %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>Proyecto Django integrador de la materia BackEnd 2025 (2do cuatrimestre).</p>
+    </footer>
+
+</body>
+</html>
