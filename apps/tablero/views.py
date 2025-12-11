@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from apps.tablero.models import Tablero
 
@@ -16,6 +16,12 @@ class TableroCreateView(CreateView):
     model = Tablero
     template_name = 'tablero/crear_tablero.html'
     fields = ['titulo', 'descripcion', 'creado_por']
+    success_url = reverse_lazy('lista_tableros')
+
+class TableroUpdateView(UpdateView):
+    model = Tablero
+    template_name = 'tablero/editar_tablero.html'
+    fields = ['titulo', 'descripcion', 'creado_por']  # De momento así, luego se automatiza el "creado_por"
     success_url = reverse_lazy('lista_tableros')
 
 class TableroDeleteView(DeleteView):
