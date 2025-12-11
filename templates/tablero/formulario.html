@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>
+    {% if object %}Editar Tablero{% else %}Crear Tablero{% endif %}
+</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div>
+        <label>Título:</label>
+        <input type="text" name="titulo" id="id_titulo" required>
+    </div>
+    
+    <div>
+        <label>Descripción:</label>
+        <textarea name="descripcion" id="id_descripcion"></textarea>
+    </div>
+    
+    <button type="submit">Guardar</button>
+    <a href="{% url 'lista_tableros' %}">Cancelar</a>
+</form>
+
+<style>
+    /* Estilos básicos */
+    input, textarea {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    textarea {
+        height: 100px;
+        resize: vertical;
+    }
+    
+    button {
+        background: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background: #0056b3;
+    }
+</style>
+{% endblock %}
