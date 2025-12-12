@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header 
+            {% if ticket.prioridad == 3 %}bg-danger
+            {% elif ticket.prioridad == 2 %}bg-warning
+            {% else %}bg-secondary{% endif %} text-white">
+            <h5 class="mb-0">{{ ticket.titulo }}</h5>
+        </div>
+        
+        <div class="card-body">
+            {% if ticket.descripcion %}
+            <div class="mb-4 border-bottom pb-3">
+                <h6>Descripción</h6>
+                <p>{{ ticket.descripcion }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Información</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <strong>Prioridad:</strong> 
+                            <span class="badge 
+                                {% if ticket.prioridad == 3 %}bg-danger
+                                {% elif ticket.prioridad == 2 %}bg-warning
+                                {% else %}bg-secondary{% endif %}">
+                                {{ ticket.get_prioridad_display }}
+                            </span>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Lista:</strong> 
+                            <span class="badge bg-info">
+                                {{ ticket.lista.titulo }}
+                            </span>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Creado por:</strong> 
+                            {{ ticket.creado_por.username }}
+                        </li>
+                        <li class="mb-2">
+                            <strong>Fecha creación:</strong> 
+                            {{ ticket.fecha_creacion|date:"d/m/Y H:i" }}
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h6>Contexto</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <strong>Tablero:</strong> 
+                            {{ ticket.tablero.titulo }}
+                        </li>
+                        <li class="mb-2">
+                            <strong>Estado:</strong> 
+                            {% if ticket.activo %}
+                                <span class="badge bg-success">Activo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </li>
+                        <li class="mb-2">
+                            <strong>Última modificación:</strong> 
+                            {{ ticket.fecha_actualizacion|date:"d/m/Y H:i" }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                <a href="{% url 'detalle_tablero' ticket.tablero.id %}" 
+                   class="btn btn-outline-secondary">
+                    Volver al Tablero
+                </a>
+                
+                <div>
+                    <a href="{% url 'ticket:editar_ticket' ticket.id %}" 
+                       class="btn btn-warning">
+                        Editar Ticket
+                    </a>
+                    <a href="{% url 'ticket:eliminar_ticket' ticket.id %}" 
+                       class="btn btn-outline-danger">
+                        Eliminar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <!-- encabezadp -->
+                <div class="card-header {% if object %}bg-warning{% else %}bg-primary{% endif %} text-white">
+                    <h5 class="mb-0">
+                        <i class="bi {% if object %}bi-pencil{% else %}bi-plus-circle{% endif %}"></i>
+                        {% if object %}Editar Ticket{% else %}Crear Ticket{% endif %}
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    <!--  información -->
+                    <div class="alert alert-info py-2 mb-3">
+                        <i class="bi bi-info-circle"></i>
+                        {% if object %}
+                            Lista: <strong>{{ object.lista.titulo }}</strong> | 
+                            Tablero: <strong>{{ object.lista.tablero.titulo }}</strong>
+                        {% elif lista %}
+                            Lista: <strong>{{ lista.titulo }}</strong> | 
+                            Tablero: <strong>{{ lista.tablero.titulo }}</strong>
+                        {% endif %}
+                    </div>
+                    
+                    <form method="post" 
+                          action="{% if object %}{% url 'ticket:editar_ticket' object.pk %}{% else %}{% url 'ticket:crear_ticket' lista.pk %}{% endif %}">
+                        
+                        {% csrf_token %}  <!-- CSRF TOKEN important -->
+                        
+                        <!-- título -->
+                        <div class="mb-3">
+                            <label for="id_titulo" class="form-label">Título *</label>
+                            <input type="text" 
+                                   name="titulo" 
+                                   id="id_titulo" 
+                                   class="form-control" 
+                                   value="{% if object %}{{ object.titulo }}{% endif %}"
+                                   required
+                                   placeholder="¿Como quiere llamar a esta tarea/ticket?">
+                        </div>
+                        
+                        <!-- descripción -->
+                        <div class="mb-3">
+                            <label for="id_descripcion" class="form-label">Descripción</label>
+                            <textarea name="descripcion" 
+                                      id="id_descripcion" 
+                                      class="form-control" 
+                                      rows="4"
+                                      placeholder="Detalles adicionales...">{% if object %}{{ object.descripcion }}{% endif %}</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- prioridad -->
+                            <div class="col-md-6 mb-3">
+                                <label for="id_prioridad" class="form-label">Prioridad *</label>
+                                <select name="prioridad" id="id_prioridad" class="form-select" required>
+                                    <option value="">Seleccionar prioridad...</option>
+                                    <option value="1" {% if object and object.prioridad == 1 %}selected{% endif %}>Baja</option>
+                                    <option value="2" {% if object and object.prioridad == 2 %}selected{% endif %}>Media</option>
+                                    <option value="3" {% if object and object.prioridad == 3 %}selected{% endif %}>Alta</option>
+                                </select>
+                            </div>
+                            
+                            <!-- asignado a (aún no lo utilizamos, asigna por defecto al usuario loguin) -->
+                            <div class="col-md-6 mb-3">
+                                <label for="id_asignado_a" class="form-label">Asignar a</label>
+                                <select name="asignado_a" id="id_asignado_a" class="form-select">
+                                    <option value="">Sin asignar</option>
+                                    {% for user in users %}
+                                    <option value="{{ user.id }}" 
+                                            {% if object and object.asignado_a and object.asignado_a.id == user.id %}selected{% endif %}>
+                                        {{ user.username }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- lista, entrando unicamente por edición de tkt -->
+                        {% if object %}
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white py-2">
+                                <h6 class="mb-0">
+                                    <i class="bi bi-arrow-left-right me-1"></i> 
+                                    Mover Ticket a Otra Lista
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <label for="id_lista" class="form-label fw-bold">Seleccionar lista destino:</label>
+                                <select name="lista" id="id_lista" class="form-select border-primary">
+                                    {% for lista_opcion in form.lista.field.queryset %}
+                                    <option value="{{ lista_opcion.id }}" 
+                                            {% if object.lista.id == lista_opcion.id %}selected{% endif %}>
+                                        {{ lista_opcion.titulo }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <small class="text-muted mt-1 d-block">
+                                    <i class="bi bi-info-circle"></i> Solo se muestran listas del mismo tablero.
+                                </small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- botones -->
+                        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                            <!-- cancelar -->
+                            {% if object %}
+                                <a href="{% url 'ticket:detalle_ticket' object.id %}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Cancelar
+                                </a>
+                            {% elif lista %}
+                                <a href="{% url 'detalle_tablero' lista.tablero.id %}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Cancelar
+                                </a>
+                            {% else %}
+                                <a href="{% url 'detalle_tablero' tablero_pk %}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Cancelar
+                                </a>
+                            {% endif %}
+                            
+                            <!-- guardar/crear -->
+                            <button type="submit" class="btn {% if object %}btn-warning{% else %}btn-primary{% endif %}">
+                                <i class="bi bi-check-circle"></i>
+                                {% if object %}Guardar Cambios{% else %}Crear Ticket{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- estilos bootstrap -->
+<style>
+    .form-select:focus, .form-control:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+    }
+    
+    .card.border-primary {
+        border-width: 2px;
+    }
+    
+    @media (max-width: 768px) {
+        .card {
+            border: none;
+            box-shadow: none;
+        }
+    }
+</style>
+{% endblock %}
