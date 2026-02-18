@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow">
-                <!-- ENCABEZADO DINÁMICO -->
+                <!-- Encabezado -->
                 <div class="card-header {% if object %}bg-warning{% else %}bg-primary{% endif %} text-white">
                     <h5 class="mb-0">
                         <i class="bi {% if object %}bi-pencil{% else %}bi-plus-circle{% endif %}"></i>
@@ -14,17 +14,17 @@
                 </div>
                 
                 <div class="card-body">
-                    <!-- INFORMACIÓN DEL TABLERO (SOLO UNA VEZ) -->
+                    <!-- Info del tablero -->
                     <p class="text-muted small mb-3">
                         <i class="bi bi-kanban"></i> 
                         Tablero: <strong>{{ tablero.titulo }}</strong>
                     </p>
                     
-                    <!-- FORMULARIO -->
+                    <!-- form -->
                     <form method="post">
                         {% csrf_token %}
                         
-                        <!-- Campo Título -->
+                        <!-- titulo -->
                         <div class="mb-3">
                             <label for="id_titulo" class="form-label">Nombre de la Lista *</label>
                             <input type="text" 
@@ -37,15 +37,15 @@
                         </div>
                         
                         
-                        <!-- BOTONES (versión simple) -->
+                        <!-- botones -->
                         <div class="d-flex justify-content-between mt-4">
-                            <!-- Botón Cancelar -->
+                            <!-- botón cancelar -->
                             <a href="{% url 'detalle_tablero' tablero.pk %}" 
                                class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Cancelar
                             </a>
                             
-                            <!-- Botón Guardar/Crear -->
+                            <!-- botón guardar/crear -->
                             <button type="submit" class="btn {% if object %}btn-warning{% else %}btn-primary{% endif %}">
                                 <i class="bi bi-check-circle"></i>
                                 {% if object %}Guardar Cambios{% else %}Crear Lista{% endif %}

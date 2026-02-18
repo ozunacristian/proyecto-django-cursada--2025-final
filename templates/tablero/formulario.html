@@ -12,11 +12,11 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <!-- FORMULARIO DE DJANGO -->
+                    <!-- form para django -->
                     <form method="post" novalidate>
                         {% csrf_token %}
                         
-                        <!-- Mostrar errores generales del formulario -->
+                        <!-- muestra errores generales del form -->
                         {% if form.non_field_errors %}
                         <div class="alert alert-danger">
                             {% for error in form.non_field_errors %}
@@ -25,7 +25,7 @@
                         </div>
                         {% endif %}
                         
-                        <!-- Campo Título -->
+                        <!-- titulo -->
                         <div class="mb-3">
                             <label for="{{ form.titulo.id_for_label }}" class="form-label fw-bold">
                                 Título <span class="text-danger">*</span>
@@ -41,7 +41,7 @@
                             <div class="form-text">Nombre del tablero (obligatorio)</div>
                         </div>
                         
-                        <!-- Campo Descripción -->
+                        <!-- descripción -->
                         <div class="mb-4">
                             <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-bold">
                                 Descripción
@@ -57,7 +57,7 @@
                             <div class="form-text">Describe el propósito del tablero</div>
                         </div>
                         
-                        <!-- Botones -->
+                        <!-- botones -->
                         <div class="d-flex justify-content-between mt-4 pt-3 border-top">
                             <a href="{% url 'lista_tableros' %}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Cancelar
@@ -74,9 +74,9 @@
     </div>
 </div>
 
-<!-- Estilos Bootstrap adicionales -->
+<!-- estilos Bootstrap adicional -->
 <style>
-    /* Estilos para inputs de Django Forms */
+    /* estilos para inputs de Django forms */
     input[type="text"], textarea {
         width: 100%;
         padding: 0.75rem;
@@ -92,31 +92,31 @@
         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
     }
     
-    /* Estilos específicos para textarea */
+    /* estilos específicos para text */
     textarea {
         min-height: 120px;
         resize: vertical;
     }
     
-    /* Estilos para etiquetas */
+    /* estilos para etiquetas */
     .form-label {
         font-weight: 500;
         margin-bottom: 0.5rem;
         color: #212529;
     }
     
-    /* Estilos para mensajes de error */
+    /* estilos para mensajes de error */
     .text-danger.small {
         font-size: 0.875rem;
     }
     
-    /* Estilos para botones */
+    /* estilos para botones */
     .btn {
         padding: 0.5rem 1.5rem;
         font-weight: 500;
     }
     
-    /* Responsive */
+    /* responsive */
     @media (max-width: 768px) {
         .card {
             border: none;
