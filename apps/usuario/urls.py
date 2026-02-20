@@ -5,7 +5,7 @@ from apps.usuario.views import PerfilUsuarioView, UsuarioLoginView, UsuarioLogou
 app_name = 'usuario'
 
 urlpatterns = [
-    path('login/', UsuarioLoginView.as_view(), name='login'),
+    path('', UsuarioLoginView.as_view(), name='login'), # raiz de la app y del sitio.
     path('logout/', UsuarioLogoutView.as_view(), name='logout'),
     path('perfil/', PerfilUsuarioView.as_view(), name='perfil'),
 ]

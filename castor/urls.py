@@ -19,6 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('apps.usuario.urls')), # Delegamos raíz a usuario, para login.
     path('usuarios/', include('apps.usuario.urls')),
     path('tableros/', include('apps.tablero.urls')),
     path('listas/', include('apps.lista.urls')),
