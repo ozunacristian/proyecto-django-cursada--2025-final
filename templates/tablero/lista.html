@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Tableros</h1>
+
+{% if perms.tablero.add_tablero %}
+<a href="{% url 'crear_tablero' %}">Crear Tablero</a>
+{% endif %}
+
+{% if object_list %}
+<ul>
+    {% for tablero in object_list %}
+    <li>
+        <a href="{% url 'detalle_tablero' tablero.id %}">{{ tablero.titulo }}</a>
+        {% if perms.tablero.change_tablero %}
+        - <a href="{% url 'editar_tablero' tablero.id %}">Editar</a>
+        {% endif %}
+        {% if perms.tablero.delete_tablero %}
+        - <a href="{% url 'eliminar_tablero' tablero.id %}">Eliminar</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No hay tableros.</p>
+{% endif %}
+{% endblock %}

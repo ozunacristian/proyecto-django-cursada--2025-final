@@ -39,7 +39,7 @@ media_root/
 static_root/
 
 # Archivos generados por collectstatic
-/static/
+#/static/
 
 # ============================================
 # CONFIGURACIONES LOCALES

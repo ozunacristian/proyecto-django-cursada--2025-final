@@ -1,31 +1,57 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
 from apps.tablero.models import Tablero
+from apps.usuario.permissions import tableros_visibles_para_usuario
 
-class TableroListView(ListView):
-    model = Tablero
-    template_name = 'tablero/lista_tableros.html'
-    context_object_name = 'tableros'
 
-class TableroDetailView(DetailView):
+class TableroListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Tablero
-    template_name = 'tablero/detalle_tablero.html'
-    context_object_name = 'tablero'
+    template_name = 'tablero/lista.html'
+    permission_required = 'tablero.view_tablero'
 
-class TableroCreateView(CreateView):
+    def get_queryset(self):
+        return tableros_visibles_para_usuario(self.request.user)
+
+
+class TableroDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Tablero
-    template_name = 'tablero/crear_tablero.html'
-    fields = ['titulo', 'descripcion', 'creado_por']
+    template_name = 'tablero/detalle.html'
+    permission_required = 'tablero.view_tablero'
+
+    def get_queryset(self):
+        return tableros_visibles_para_usuario(self.request.user)
+
+
+class TableroCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Tablero
+    template_name = 'tablero/formulario.html'
+    fields = ['titulo', 'descripcion']
     success_url = reverse_lazy('lista_tableros')
+    permission_required = 'tablero.add_tablero'
 
-class TableroUpdateView(UpdateView):
+    def form_valid(self, form):
+        form.instance.creado_por = self.request.user
+        return super().form_valid(form)
+
+
+class TableroUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Tablero
-    template_name = 'tablero/editar_tablero.html'
-    fields = ['titulo', 'descripcion', 'creado_por']  # De momento así, luego se automatiza el "creado_por"
+    template_name = 'tablero/formulario.html'
+    fields = ['titulo', 'descripcion']
     success_url = reverse_lazy('lista_tableros')
+    permission_required = 'tablero.change_tablero'
 
-class TableroDeleteView(DeleteView):
+    def get_queryset(self):
+        return tableros_visibles_para_usuario(self.request.user)
+
+
+class TableroDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Tablero
-    template_name = 'tablero/confirmar_eliminar_tablero.html'
+    template_name = 'tablero/eliminar.html'
     success_url = reverse_lazy('lista_tableros')
+    permission_required = 'tablero.delete_tablero'
 
+    def get_queryset(self):
+        return tableros_visibles_para_usuario(self.request.user)

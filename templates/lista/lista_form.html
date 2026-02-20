@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <!-- Encabezado -->
+                <div class="card-header {% if object %}bg-warning{% else %}bg-primary{% endif %} text-white">
+                    <h5 class="mb-0">
+                        <i class="bi {% if object %}bi-pencil{% else %}bi-plus-circle{% endif %}"></i>
+                        {% if object %}Editar Lista{% else %}Crear Lista{% endif %}
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Info del tablero -->
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-kanban"></i> 
+                        Tablero: <strong>{{ tablero.titulo }}</strong>
+                    </p>
+                    
+                    <!-- form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- titulo -->
+                        <div class="mb-3">
+                            <label for="id_titulo" class="form-label">Nombre de la Lista *</label>
+                            <input type="text" 
+                                   name="titulo" 
+                                   id="id_titulo" 
+                                   class="form-control" 
+                                   value="{% if object %}{{ object.titulo }}{% endif %}"
+                                   required
+                                   placeholder="Ej: En Progreso, Pendiente">
+                        </div>
+                        
+                        
+                        <!-- botones -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <!-- botón cancelar -->
+                            <a href="{% url 'detalle_tablero' tablero.pk %}" 
+                               class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            
+                            <!-- botón guardar/crear -->
+                            <button type="submit" class="btn {% if object %}btn-warning{% else %}btn-primary{% endif %}">
+                                <i class="bi bi-check-circle"></i>
+                                {% if object %}Guardar Cambios{% else %}Crear Lista{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

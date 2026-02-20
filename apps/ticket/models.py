@@ -25,7 +25,7 @@ class Ticket(models.Model):
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     activo = models.BooleanField(default=True)
-
+    
     class Meta:
         ordering = ['-fecha_creacion'] # ordenamos por fecha.
         verbose_name = 'Ticket'

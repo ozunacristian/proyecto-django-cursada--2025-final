@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Eliminar Tablero</h1>
+
+<p>¿Seguro que quieres eliminar "{{ object.titulo }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, eliminar</button>
+    <a href="{% url 'detalle_tablero' object.id %}">Cancelar</a>
+</form>
+{% endblock %}
