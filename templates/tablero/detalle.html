@@ -25,19 +25,22 @@
                         #{{ lista.orden }}
                     </span>
                     
-                    <a href="{% url 'lista:update' lista.id %}" 
-                       class="btn btn-sm btn-outline-secondary me-1" 
-                       title="Editar lista"
-                       style="padding: 0.15rem 0.3rem;">
-                        Editar
-                    </a>
-                    
-                    <a href="{% url 'lista:delete' lista.id %}" 
-                       class="btn btn-sm btn-outline-danger" 
-                       title="Eliminar lista"
-                       style="padding: 0.15rem 0.3rem;">
-                        Eliminar
-                    </a>
+                    {% if perms.lista.change_lista %}
+                        <a href="{% url 'lista:update' lista.id %}" 
+                           class="btn btn-sm btn-outline-secondary me-1" 
+                           title="Editar lista"
+                           style="padding: 0.15rem 0.3rem;">
+                            Editar
+                        </a>
+                    {% endif %}
+                    {% if perms.lista.delete_lista %}
+                        <a href="{% url 'lista:delete' lista.id %}" 
+                           class="btn btn-sm btn-outline-danger" 
+                           title="Eliminar lista"
+                           style="padding: 0.15rem 0.3rem;">
+                            Eliminar
+                        </a>
+                    {% endif %}
                 </div>
             </div>
             
@@ -75,14 +78,16 @@
                                         {% endif %}
                                     </div>
                                     
-                                    <div class="ticket-actions" style="z-index: 10; position: relative;">
-                                        <a href="{% url 'ticket:eliminar_ticket' ticket.id %}" 
-                                           class="text-danger" 
-                                           title="Eliminar ticket"
-                                           onclick="event.stopPropagation();">
-                                            Eliminar
-                                        </a>
-                                    </div>
+                                    {% if perms.ticket.delete_ticket %}
+                                        <div class="ticket-actions" style="z-index: 10; position: relative;">
+                                            <a href="{% url 'ticket:eliminar_ticket' ticket.id %}" 
+                                               class="text-danger" 
+                                               title="Eliminar ticket"
+                                               onclick="event.stopPropagation();">
+                                                Eliminar
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 
                                 <small class="text-muted d-block mt-2">
@@ -101,9 +106,11 @@
             </div>
             
             <div class="card-footer text-center py-2">
-                <a href="{% url 'ticket:crear_ticket' lista.id %}" class="btn btn-outline-primary btn-sm w-100">
-                    Agregar Ticket
-                </a>
+                {% if perms.ticket.add_ticket %}
+                    <a href="{% url 'ticket:crear_ticket' lista.id %}" class="btn btn-outline-primary btn-sm w-100">
+                        Agregar Ticket
+                    </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -117,16 +124,21 @@
     {% endif %}
 
     <div class="mt-4 pt-3 border-top">
-        <a href="{% url 'lista:create' object.id %}" class="btn btn-success">
-            Agregar Nueva Lista
-        </a>
-        
-        <a href="{% url 'editar_tablero' object.id %}" class="btn btn-outline-secondary ms-2">
-            Editar Tablero
-        </a>
-        <a href="{% url 'eliminar_tablero' object.id %}" class="btn btn-outline-danger ms-2">
-            Eliminar Tablero
-        </a>
+        {% if perms.lista.add_lista %}
+            <a href="{% url 'lista:create' object.id %}" class="btn btn-success">
+                Agregar Nueva Lista
+            </a>
+        {% endif %}
+        {% if perms.tablero.change_tablero %}
+            <a href="{% url 'editar_tablero' object.id %}" class="btn btn-outline-secondary ms-2">
+                Editar Tablero
+            </a>
+        {% endif %}
+        {% if perms.tablero.delete_tablero %}
+            <a href="{% url 'eliminar_tablero' object.id %}" class="btn btn-outline-danger ms-2">
+                Eliminar Tablero
+            </a>
+        {% endif %}
         <a href="{% url 'lista_tableros' %}" class="btn btn-outline-primary ms-2">
             Volver a Tableros
         </a>
