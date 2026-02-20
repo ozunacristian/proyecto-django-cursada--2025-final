@@ -78,14 +78,18 @@
                 </a>
                 
                 <div>
-                    <a href="{% url 'ticket:editar_ticket' ticket.id %}" 
-                       class="btn btn-warning">
-                        Editar Ticket
-                    </a>
-                    <a href="{% url 'ticket:eliminar_ticket' ticket.id %}" 
-                       class="btn btn-outline-danger">
-                        Eliminar
-                    </a>
+                    {% if perms.ticket.change_ticket %}
+                        <a href="{% url 'ticket:editar_ticket' ticket.id %}" 
+                           class="btn btn-warning">
+                            Editar Ticket
+                        </a>
+                    {% endif %}
+                    {% if perms.ticket.delete_ticket %}
+                        <a href="{% url 'ticket:eliminar_ticket' ticket.id %}" 
+                           class="btn btn-outline-danger">
+                            Eliminar
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

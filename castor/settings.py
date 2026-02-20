@@ -91,13 +91,20 @@ WSGI_APPLICATION = 'castor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'castordb',  # Sin guión bajo
-        'USER': 'castoruser',  # Sin guión bajo
-        'PASSWORD': 'admin',  # Sin números
-        'HOST': '127.0.0.1',  # IP en lugar de 'localhost'
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'gestor_castor_db.sqlite3',
     }
+
+    # CONFIGURACIÓN PARA CONEXIÓN CON BASE DE DATOS POSTGRESQL
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'castordb',
+    #     'USER': 'castoruser',
+    #     'PASSWORD': 'admin',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '5432',
+    # }
+
 }
 
 
@@ -139,5 +146,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+LOGIN_URL = 'usuario:login'
+LOGIN_REDIRECT_URL = 'lista_tableros'
+LOGOUT_REDIRECT_URL = 'usuario:login'
 
 DEFAULT_CHARSET = 'utf-8'
