@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header">
+            <h5 class="mb-0">
+                {% if comentario %}Editar comentario{% else %}Nuevo comentario{% endif %}
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">Ticket: {{ ticket.titulo }}</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{% url 'ticket:detalle_ticket' ticket.id %}" class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
