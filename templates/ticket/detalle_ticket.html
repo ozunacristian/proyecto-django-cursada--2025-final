@@ -70,6 +70,101 @@
                     </ul>
                 </div>
             </div>
+
+            <div class="mt-4 pt-3 border-top">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Etiquetas</h6>
+                    {% if perms.etiqueta.add_etiqueta %}
+                        <a href="{% url 'etiqueta:crear' ticket.tablero.id %}" class="btn btn-sm btn-outline-primary">
+                            Nueva etiqueta
+                        </a>
+                    {% endif %}
+                </div>
+
+                {% if ticket.ticket_etiquetas.all %}
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        {% for relacion in ticket.ticket_etiquetas.all %}
+                            <span class="badge"
+                                  style="background-color: {{ relacion.etiqueta.color }}; color: #fff;"> <!--Esto es un falso positivo vsc no entiende template tag de django-->
+            </p>
+                                {{ relacion.etiqueta.nombre }}
+                            </span>
+                            {% if perms.etiqueta.change_etiqueta %}
+                                <form method="post"
+                                      action="{% url 'etiqueta:quitar_ticket' relacion.id %}"
+                                      class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Quitar</button>
+                                </form>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-3">Este ticket no tiene etiquetas.</p>
+                {% endif %}
+
+                {% if perms.etiqueta.change_etiqueta and etiquetas_disponibles %}
+                    <form method="post" action="{% url 'etiqueta:asignar_ticket' ticket.id %}" class="row g-2">
+                        {% csrf_token %}
+                        <div class="col-md-8">
+                            <select name="etiqueta_id" class="form-select" required>
+                                <option value="">Selecciona una etiqueta...</option>
+                                {% for etiqueta in etiquetas_disponibles %}
+                                    <option value="{{ etiqueta.id }}">{{ etiqueta.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-outline-primary w-100">Asignar etiqueta</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+
+            <div class="mt-4 pt-3 border-top">
+                <h6>Comentarios</h6>
+
+                {% if ticket.comentarios.all %}
+                    <div class="mb-3">
+                        {% for comentario in ticket.comentarios.all %}
+                            <div class="border rounded p-3 mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <strong>{{ comentario.usuario.username|default:"Usuario eliminado" }}</strong>
+                                    <small class="text-muted">
+                                        {{ comentario.fecha_creacion|date:"d/m/Y H:i" }}
+                                    </small>
+                                </div>
+                                <p class="mb-2 mt-2">{{ comentario.contenido }}</p>
+
+                                {% if perms.comentario.change_comentario %}
+                                    <a href="{% url 'comentario:editar' comentario.id %}"
+                                       class="btn btn-sm btn-outline-secondary">Editar</a>
+                                {% endif %}
+                                {% if perms.comentario.delete_comentario %}
+                                    <a href="{% url 'comentario:eliminar' comentario.id %}"
+                                       class="btn btn-sm btn-outline-danger">Eliminar</a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Todavía no hay comentarios en este ticket.</p>
+                {% endif %}
+
+                {% if perms.comentario.add_comentario %}
+                    <form method="post" action="{% url 'comentario:crear' ticket.id %}">
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <textarea name="contenido"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Escribe un comentario..."
+                                      required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar comentario</button>
+                    </form>
+                {% endif %}
+            </div>
             
             <div class="d-flex justify-content-between mt-4 pt-3 border-top">
                 <a href="{% url 'detalle_tablero' ticket.tablero.id %}" 

@@ -63,6 +63,13 @@ class TicketDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
             tablero__in=tableros_visibles_para_usuario(self.request.user)
         )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['etiquetas_disponibles'] = self.object.tablero.etiquetas.exclude(
+            etiqueta_tickets__ticket=self.object
+        )
+        return context
+
 
 class TicketUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Ticket
