@@ -2,8 +2,9 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from apps.lista.models import Lista
@@ -96,6 +97,34 @@ class TicketUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('detalle_tablero', args=[self.object.tablero.pk])
+
+
+class TicketMoveView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'ticket.change_ticket'
+
+    def post(self, request, pk):
+        ticket = get_object_or_404(
+            Ticket.objects.filter(tablero__in=tableros_visibles_para_usuario(request.user)),
+            pk=pk,
+        )
+        lista_destino_id = request.POST.get('lista_destino_id')
+        if not lista_destino_id:
+            messages.error(request, 'Debes seleccionar una lista de destino.')
+            return redirect('detalle_tablero', pk=ticket.tablero.pk)
+
+        lista_destino = get_object_or_404(
+            Lista.objects.filter(tablero=ticket.tablero),
+            pk=lista_destino_id,
+        )
+        if ticket.lista_id == lista_destino.pk:
+            messages.info(request, f'El ticket ya está en "{lista_destino.titulo}".')
+            return redirect('detalle_tablero', pk=ticket.tablero.pk)
+
+        ticket.lista = lista_destino
+        ticket.save()
+        messages.success(request, f'Ticket movido a "{lista_destino.titulo}".')
+        return redirect('detalle_tablero', pk=ticket.tablero.pk)
+
 
 class TicketDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Ticket
