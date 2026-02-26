@@ -1,27 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Tableros</h1>
-
-{% if perms.tablero.add_tablero %}
-<a href="{% url 'crear_tablero' %}">Crear Tablero</a>
-{% endif %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Tableros</h1>
+    {% if perms.tablero.add_tablero %}
+    <a href="{% url 'crear_tablero' %}" class="btn btn-primary">Crear Tablero</a>
+    {% endif %}
+</div>
 
 {% if object_list %}
-<ul>
+<div class="row g-3">
     {% for tablero in object_list %}
-    <li>
-        <a href="{% url 'detalle_tablero' tablero.id %}">{{ tablero.titulo }}</a>
-        {% if perms.tablero.change_tablero %}
-        - <a href="{% url 'editar_tablero' tablero.id %}">Editar</a>
-        {% endif %}
-        {% if perms.tablero.delete_tablero %}
-        - <a href="{% url 'eliminar_tablero' tablero.id %}">Eliminar</a>
-        {% endif %}
-    </li>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-2">{{ tablero.titulo }}</h5>
+                <p class="card-text text-muted mb-3">
+                    {{ tablero.descripcion|default:"Sin descripción"|truncatechars:90 }}
+                </p>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'detalle_tablero' tablero.id %}" class="btn btn-outline-primary btn-sm">
+                        Ver tablero
+                    </a>
+                    {% if perms.tablero.change_tablero %}
+                    <a href="{% url 'editar_tablero' tablero.id %}" class="btn btn-outline-secondary btn-sm">
+                        Editar
+                    </a>
+                    {% endif %}
+                    {% if perms.tablero.delete_tablero %}
+                    <a href="{% url 'eliminar_tablero' tablero.id %}" class="btn btn-danger btn-sm fw-semibold">
+                        Eliminar
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% else %}
-<p>No hay tableros.</p>
+<div class="alert alert-info">No hay tableros.</div>
 {% endif %}
 {% endblock %}
