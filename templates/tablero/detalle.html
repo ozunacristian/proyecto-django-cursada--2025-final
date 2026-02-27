@@ -20,11 +20,37 @@
         {% endif %}
     </div>
 
-    {% if object.listas.all %}
+    <div class="mb-3">
+        <form method="get" class="row g-2 align-items-center">
+            <div class="col-12 col-md-8">
+                <input
+                    type="search"
+                    name="q"
+                    class="form-control"
+                    value="{{ q }}"
+                    placeholder="Buscar por título o descripción del ticket..."
+                >
+            </div>
+            <div class="col-6 col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
+            </div>
+            <div class="col-6 col-md-2">
+                <a href="{% url 'detalle_tablero' object.id %}" class="btn btn-outline-secondary w-100">Limpiar</a>
+            </div>
+        </form>
+    </div>
+
+    {% if q and total_tickets_filtrados == 0 %}
+    <div class="alert alert-warning">
+        No se encontraron tickets para la búsqueda <strong>"{{ q }}"</strong>.
+    </div>
+    {% endif %}
+
+    {% if listas %}
     <!-- conten scroll horizontal -->
     <div class="d-flex flex-row flex-nowrap overflow-auto pb-3 gap-3" style="min-height: 400px;">
         
-        {% for lista in object.listas.all %}
+        {% for lista in listas %}
         <!-- ancho fijo de columna -->
         <div class="card flex-shrink-0" style="width: 320px;">
             
@@ -65,8 +91,9 @@
             
             <div class="card-body" style="min-height: 300px; background-color: #f8f9fa;">
                 
-                {% if lista.tickets.all %}
-                    {% for ticket in lista.tickets.all %}
+                {% if lista.tickets_filtrados %}
+                    {# Nota de mantenimiento: usamos tickets_filtrados para evitar lógica de filtros en template. #}
+                    {% for ticket in lista.tickets_filtrados %}
                         <div class="card mb-2 shadow-sm kanban-ticket" 
                              style="border-left: 4px solid 
                              {% if ticket.prioridad == 3 %}#dc3545{% elif ticket.prioridad == 2 %}#ffc107{% else %}#28a745{% endif %};">
@@ -110,7 +137,7 @@
                                                     Mover
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    {% for destino in object.listas.all %}
+                                                    {% for destino in listas %}
                                                         {% if destino.id != ticket.lista_id %}
                                                             <li>
                                                                 <form method="post" action="{% url 'ticket:mover_ticket' ticket.id %}">
