@@ -13,7 +13,7 @@ from apps.usuario.permissions import tableros_visibles_para_usuario
 
 User = get_user_model()
 
-
+# Esto queda en deshuso de momento, será parte de la funcionalidad de poder asignar tickets a operadores/
 def _usuarios_asignables_para_tablero(tablero):
     return User.objects.filter(
         Q(tableros_creados=tablero) | Q(tableros_como_miembro__tablero=tablero)
