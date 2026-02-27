@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -22,6 +23,33 @@ class TableroDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
 
     def get_queryset(self):
         return tableros_visibles_para_usuario(self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = (self.request.GET.get('q') or '').strip()
+
+        # El buscador se resuelve en backend para tener consistencia con paginación,
+        # permisos y futuros filtros adicionales (prioridad/asignado).
+        tickets_qs = self.object.tickets.select_related('asignado_a')
+        if query:
+            tickets_qs = tickets_qs.filter(
+                Q(titulo__icontains=query) | Q(descripcion__icontains=query)
+            )
+
+        tickets_por_lista = {}
+        for ticket in tickets_qs:
+            tickets_por_lista.setdefault(ticket.lista_id, []).append(ticket)
+
+        # Inyectamos una colección por lista para que el template no haga "lógica compleja"
+        # con diccionarios dinámicos.
+        listas = list(self.object.listas.all())
+        for lista in listas:
+            lista.tickets_filtrados = tickets_por_lista.get(lista.id, [])
+
+        context['listas'] = listas
+        context['q'] = query
+        context['total_tickets_filtrados'] = tickets_qs.count()
+        return context
 
 
 class TableroCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):

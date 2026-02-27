@@ -55,7 +55,7 @@
                         
                         <div class="row">
                             <!-- prioridad -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="id_prioridad" class="form-label">Prioridad *</label>
                                 <select name="prioridad" id="id_prioridad" class="form-select" required>
                                     <option value="">Seleccionar prioridad...</option>
@@ -64,45 +64,23 @@
                                     <option value="3" {% if object and object.prioridad == 3 %}selected{% endif %}>Alta</option>
                                 </select>
                             </div>
-                            
-                            <!-- asignado a (aún no lo utilizamos, asigna por defecto al usuario loguin) -->
-                            <div class="col-md-6 mb-3">
-                                <label for="id_asignado_a" class="form-label">Asignar a</label>
-                                <select name="asignado_a" id="id_asignado_a" class="form-select">
-                                    <option value="">Sin asignar</option>
-                                    {% for user in users %}
-                                    <option value="{{ user.id }}" 
-                                            {% if object and object.asignado_a and object.asignado_a.id == user.id %}selected{% endif %}>
-                                        {{ user.username }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
                         </div>
                         
                         <!-- lista, entrando unicamente por edición de tkt -->
                         {% if object %}
-                        <div class="card border-primary mb-4">
-                            <div class="card-header bg-primary text-white py-2">
-                                <h6 class="mb-0">
-                                    <i class="bi bi-arrow-left-right me-1"></i> 
-                                    Mover Ticket a Otra Lista
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <label for="id_lista" class="form-label fw-bold">Seleccionar lista destino:</label>
-                                <select name="lista" id="id_lista" class="form-select border-primary">
-                                    {% for lista_opcion in form.lista.field.queryset %}
-                                    <option value="{{ lista_opcion.id }}" 
-                                            {% if object.lista.id == lista_opcion.id %}selected{% endif %}>
-                                        {{ lista_opcion.titulo }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                                <small class="text-muted mt-1 d-block">
-                                    <i class="bi bi-info-circle"></i> Solo se muestran listas del mismo tablero.
-                                </small>
-                            </div>
+                        <div class="move-ticket-block mb-4 p-3 rounded">
+                            <label for="id_lista" class="form-label mb-1">Mover a otra lista</label>
+                            <select name="lista" id="id_lista" class="form-select form-select-sm">
+                                {% for lista_opcion in form.lista.field.queryset %}
+                                <option value="{{ lista_opcion.id }}" 
+                                        {% if object.lista.id == lista_opcion.id %}selected{% endif %}>
+                                    {{ lista_opcion.titulo }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted mt-1 d-block">
+                                Solo se muestran listas del mismo tablero.
+                            </small>
                         </div>
                         {% endif %}
                         
@@ -149,8 +127,9 @@
         color: #0c5460;
     }
     
-    .card.border-primary {
-        border-width: 2px;
+    .move-ticket-block {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
     }
     
     @media (max-width: 768px) {

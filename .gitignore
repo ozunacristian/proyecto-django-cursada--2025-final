@@ -24,6 +24,7 @@ ENV/
 # ============================================
 # ARCHIVO BASE DE DATOS LOCAL (NO VA AL REPO)
 # ============================================
+*.sqlite3
 db.sqlite3
 castor_db
 

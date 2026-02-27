@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Eliminar etiqueta</h5>
+        </div>
+        <div class="card-body">
+            <p>
+                Vas a eliminar la etiqueta
+                <span class="badge" style="background-color: {{ etiqueta.color }};">{{ etiqueta.nombre }}</span>. <!--Esto es un falso positivo vsc no entiende template tag de django-->
+            </p>
+            <p class="text-muted">Esta acción quitará su relación con los tickets asociados.</p>
+
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a href="{% url 'detalle_tablero' etiqueta.tablero.id %}" class="btn btn-outline-secondary">
+                    Cancelar
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
