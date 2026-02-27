@@ -55,27 +55,13 @@
                         
                         <div class="row">
                             <!-- prioridad -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="id_prioridad" class="form-label">Prioridad *</label>
                                 <select name="prioridad" id="id_prioridad" class="form-select" required>
                                     <option value="">Seleccionar prioridad...</option>
                                     <option value="1" {% if object and object.prioridad == 1 %}selected{% endif %}>Baja</option>
                                     <option value="2" {% if object and object.prioridad == 2 %}selected{% endif %}>Media</option>
                                     <option value="3" {% if object and object.prioridad == 3 %}selected{% endif %}>Alta</option>
-                                </select>
-                            </div>
-                            
-                            <!-- asignado a (aún no lo utilizamos, asigna por defecto al usuario loguin) -->
-                            <div class="col-md-6 mb-3">
-                                <label for="id_asignado_a" class="form-label">Asignar a</label>
-                                <select name="asignado_a" id="id_asignado_a" class="form-select">
-                                    <option value="">Sin asignar</option>
-                                    {% for user in users %}
-                                    <option value="{{ user.id }}" 
-                                            {% if object and object.asignado_a and object.asignado_a.id == user.id %}selected{% endif %}>
-                                        {{ user.username }}
-                                    </option>
-                                    {% endfor %}
                                 </select>
                             </div>
                         </div>

@@ -23,7 +23,7 @@ def _usuarios_asignables_para_tablero(tablero):
 class TicketCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Ticket
     template_name = 'ticket/ticket_form.html'
-    fields = ['titulo', 'descripcion', 'prioridad', 'asignado_a']
+    fields = ['titulo', 'descripcion', 'prioridad']
     permission_required = 'ticket.add_ticket'
 
     def _get_lista(self):
@@ -36,11 +36,6 @@ class TicketCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['lista'] = self._get_lista()
         return context
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields['asignado_a'].queryset = _usuarios_asignables_para_tablero(self._get_lista().tablero)
-        return form
 
     def form_valid(self, form):
         lista = self._get_lista()
@@ -75,7 +70,7 @@ class TicketDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 class TicketUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Ticket
     template_name = 'ticket/ticket_form.html'
-    fields = ['titulo', 'descripcion', 'lista', 'prioridad', 'asignado_a']
+    fields = ['titulo', 'descripcion', 'lista', 'prioridad']
     permission_required = 'ticket.change_ticket'
 
     def get_queryset(self):
@@ -86,7 +81,6 @@ class TicketUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['lista'].queryset = Lista.objects.filter(tablero=self.object.tablero)
-        form.fields['asignado_a'].queryset = _usuarios_asignables_para_tablero(self.object.tablero)
         return form
 
     def form_valid(self, form):
