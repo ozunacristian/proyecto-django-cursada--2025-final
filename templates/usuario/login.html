@@ -3,6 +3,7 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-5">
+        <div class="text-center castor-icon" aria-hidden="true">🦫</div>
         <div class="card">
             <div class="card-header">
                 <h4 class="mb-0">Ingresar</h4>
@@ -32,4 +33,18 @@
         </div>
     </div>
 </div>
+
+<style>
+    .castor-icon {
+        font-size: 4rem;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        animation: castor-bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes castor-bounce {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-14px) rotate(-8deg); }
+    }
+</style>
 {% endblock %}
